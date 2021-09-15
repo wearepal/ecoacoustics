@@ -5,7 +5,7 @@ import numpy as np
 from tqdm import tqdm
 
 # Initialise a datamodule for testing.
-root_dir = Path().resolve().parent
+root_dir = Path().resolve().parent.parent
 dm = EcoacousticsDataModule(root_dir, specgram_segment_len=1, test_prop=0, val_prop=0)
 dm.prepare_data()
 dm.setup()
