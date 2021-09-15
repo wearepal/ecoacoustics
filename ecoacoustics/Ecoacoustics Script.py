@@ -22,7 +22,7 @@ model = torch.hub.load('DavidHurst/torchvggish', 'vggish', preprocess=False, dev
 # Test loop.
 model.eval()
 preds = []
-for data in enumerate(data_loader):
+for data in tqdm(enumerate(data_loader)):
     x = data.x.to(device)
     y = model(x)
     preds.append(y.detach.cpu().numpy())
