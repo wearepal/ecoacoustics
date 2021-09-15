@@ -1,11 +1,12 @@
-import os
+from pathlib import Path
 import torch
 from conduit.data.datamodules.audio import EcoacousticsDataModule
 import numpy as np
 from tqdm import tqdm
 
 # Initialise a datamodule for testing.
-dm = EcoacousticsDataModule(os.getcwd(), specgram_segment_len=1, test_prop=0, val_prop=0)
+root_dir = Path().resolve().parent
+dm = EcoacousticsDataModule(root_dir, specgram_segment_len=1, test_prop=0, val_prop=0)
 dm.prepare_data()
 dm.setup()
 
