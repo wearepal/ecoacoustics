@@ -25,5 +25,10 @@ preds = []
 for data in enumerate(data_loader):
     x = data.x.to(device)
     y = model(x)
-    preds += y.detach.cpu().numpy()
+    preds.append(y.detach.cpu().numpy())
+
+preds = np.concat(preds, axis=0)
+
+print(len(preds))
+print(preds[0])
 
