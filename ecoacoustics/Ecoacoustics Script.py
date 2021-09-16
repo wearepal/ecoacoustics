@@ -3,6 +3,7 @@ import torch
 from conduit.data.datamodules.audio import EcoacousticsDataModule
 from sklearn import ensemble, model_selection, tree, metrics
 from tqdm import tqdm
+import numpy as np
 
 
 # Initialise a datamodule for testing.
@@ -17,7 +18,7 @@ print(f'The train/test/validation split of the dataset is:\n  {dm.num_train_samp
 data_loader = dm.train_dataloader()
 
 # Define device.
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
 # Load VGGish.
 model = torch.hub.load('DavidHurst/torchvggish', 'vggish', preprocess=False, device=device, postprocess=False)
@@ -28,28 +29,36 @@ preds = []
 labels = []
 i = 0
 with torch.no_grad():
-    for data in tqdm(data_loader, desc="Predicting"):
+    for data in tqdm(data_loader, desc="Generating Representations"):
         x = data.x.to(device)
         y = data.y.to(device)
 
         pred = model(x)
         preds.append(pred.cpu().numpy())
-        labels.append(y)
+        labels.append(y.cpu().numpy())
 
         i += 1
-        if i > 100:
+        if i > 10_000:
             break
 
+preds = [p.squeeze() for p in preds]
+labels = np.asarray(labels).ravel()
+
+# Save memory, del spectrogram encoder.
+del model
+
+print(f'Shape of first sample = {preds[0].shape}')
+print(f'Label 1 = {labels[0]}, shape = {labels[0].shape}')
+            
 # Split data into train and test for random forest.
 X_train, X_test, y_train, y_test = model_selection.train_test_split(preds, labels, test_size=0.20)
 
 # Fit random forest to data and get predictions.
 rm_clf = ensemble.RandomForestClassifier()
 rm_clf.fit(X_train, y_train)
-
 y_test_pred = rm_clf.predict(X_test)
-f1 = metrics.f1_score(y_test, y_test_pred)
 
-print(f'The F1 score is: {f1}')
+# Evaluate classifier's performance.
+f1 = metrics.f1_score(y_test, y_test_pred, average='micro')
 
-
+print(f'The F1 score for the predictions is: {f1:.2f}')
