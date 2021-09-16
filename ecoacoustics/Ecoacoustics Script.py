@@ -1,10 +1,9 @@
 from pathlib import Path
 import torch
 from conduit.data.datamodules.audio import EcoacousticsDataModule
-from torch.utils.data import Dataset
-from sklearn.ensemble import RandomForestClassifier
-import numpy as np
+from sklearn import ensemble, model_selection, tree, metrics
 from tqdm import tqdm
+
 
 # Initialise a datamodule for testing.
 root_dir = Path().resolve().parent.parent
@@ -17,31 +16,40 @@ print(f'The train/test/validation split of the dataset is:\n  {dm.num_train_samp
 # Get data loader, all data.
 data_loader = dm.train_dataloader()
 
+# Define device.
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-# Load model.
+# Load VGGish.
 model = torch.hub.load('DavidHurst/torchvggish', 'vggish', preprocess=False, device=device, postprocess=False)
 
 # Test loop.
 model.eval()
 preds = []
+labels = []
 i = 0
 with torch.no_grad():
     for data in tqdm(data_loader, desc="Predicting"):
         x = data.x.to(device)
-        y = model(x)
-        preds.append(y.cpu().numpy())
+        y = data.y.to(device)
+
+        pred = model(x)
+        preds.append(pred.cpu().numpy())
+        labels.append(y)
+
         i += 1
         if i > 100:
             break
 
-print(f'Prediction shape: {preds[0].size()}')
-print('Values of prediction 0:', preds[0])
-np.savetxt(root_dir / "preds.csv", np.asarray(preds), delimiter=",")
+# Split data into train and test for random forest.
+X_train, X_test, y_train, y_test = model_selection.train_test_split(preds, labels, test_size=0.20)
 
-class PredictionDataset(Dataset):
-    
+# Fit random forest to data and get predictions.
+rm_clf = ensemble.RandomForestClassifier()
+rm_clf.fit(X_train, y_train)
 
-rm_clf = RandomForestClassifier()
+y_test_pred = rm_clf.predict(X_test)
+f1 = metrics.f1_score(y_test, y_test_pred)
+
+print(f'The F1 score is: {f1}')
 
 
