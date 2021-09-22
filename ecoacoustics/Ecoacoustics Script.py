@@ -102,6 +102,7 @@ def main():
         val_prop=0,
         train_batch_size=1,
         num_freq_bins=64,
+        resample_rate=16_000,
     )
     dm.prepare_data()
     dm.setup()
