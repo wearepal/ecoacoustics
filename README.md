@@ -29,7 +29,7 @@ Dependencies for this repository are managed with [Poetry] and it is recommended
     ```
 5. Call poetry to install all modules/packages that this repository depends on:
     ```sh
-    poetry install
+    poetry install --no-dev
     ```
 6. Either run the cells in the notebook manually or run the script with:
     ```sh
