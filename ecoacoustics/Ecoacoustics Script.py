@@ -86,7 +86,15 @@ def main():
     root_dir = Path().resolve().parent.parent
     
     # Initialise Conduit datamodule (stores dataloaders).
-    dm = EcoacousticsDataModule(root_dir, specgram_segment_len=0.96, test_prop=0, val_prop=0, train_batch_size=1, num_freq_bins=64)
+    dm = EcoacousticsDataModule(
+        root_dir, 
+        specgram_segment_len=0.96, 
+        test_prop=0, 
+        val_prop=0, 
+        train_batch_size=1, 
+        num_freq_bins=64,
+        resample_rate=16_000
+    )
     dm.prepare_data()
     dm.setup()
     
