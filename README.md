@@ -1,8 +1,8 @@
 # Deep Learning Soundscapes for Ecoacoustics
----
-This repository packages up the work I undertook for my internship with the Predictive Analytics Lab at Sussex University. The repository demonstrates how to use the Predictive Analytics Lab's Conduit framework integreation of the ecoacoustics audio dataset provided by Aldrige et al. [1], while also reproducing some of the results obtained by Sethi et al.[2].
 
-### Installation
+This repository packages up the work I undertook for my internship with the Predictive Analytics Lab at Sussex University. The repository demonstrates how to use the Predictive Analytics Lab's Conduit framework integreation of the ecoacoustics audio dataset provided by Aldrige et al. [1], while also reproducing some of the results obtained by Sethi et al. [2].
+
+## Installation
 
 Dependencies for this repository are managed with [Poetry] and it is recommended to install dependencies in a virtual environment as Conduit has quite a few dependencies. The following steps will show how this is done using [Anaconda].
 
@@ -38,7 +38,7 @@ Dependencies for this repository are managed with [Poetry] and it is recommended
 ---
 [1]: Alice Eldridge, Paola Moscoso, Patrice Guyot, & Mika Peck. (2018). Data for "Sounding out Ecoacoustic Metrics: Avian species richness is predicted by acoustic indices in temperate but not tropical habitats" (Final) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.1255218
 
-[2]:Sethi, Sarab S., Nick S. Jones, Ben D. Fulcher, Lorenzo Picinali, Dena Jane Clink, Holger Klinck, C. David L. Orme, Peter H. Wrege, and Robert M. Ewers. “Characterizing Soundscapes across Diverse Ecosystems Using a Universal Acoustic Feature Set.” Proceedings of the National Academy of Sciences 117, no. 29 (July 21, 2020): 17049–55. https://doi.org/10.1073/pnas.2004702117.
+[2]: Sethi, Sarab S., Nick S. Jones, Ben D. Fulcher, Lorenzo Picinali, Dena Jane Clink, Holger Klinck, C. David L. Orme, Peter H. Wrege, and Robert M. Ewers. “Characterizing Soundscapes across Diverse Ecosystems Using a Universal Acoustic Feature Set.” Proceedings of the National Academy of Sciences 117, no. 29 (July 21, 2020): 17049–55. https://doi.org/10.1073/pnas.2004702117.
 
 [//]: #
   [Poetry]: <https://python-poetry.org/>
