@@ -13,10 +13,14 @@ import torch
 from conduit.data.datamodules.audio import EcoacousticsDataModule
 from sklearn import ensemble, metrics, model_selection
 from tqdm import tqdm
+import torchaudio.transforms as T
+import umap
+import umap.plot
 
+ROOT_DIR = Path().resolve().parent.parent
 
 def gen_reps(datamodule, out_dir, save=True):
-    """Pass data through VGGish to obtain 128dim represntations of samples."""
+    """Pass data through VGGish to obtain 128 dimensional vector representations of samples."""
 
     # Get data loader.
     data_loader = datamodule.train_dataloader()
@@ -90,25 +94,52 @@ def run_random_forest(representations, labels, n_trials=3):
 
     return avg_f1, cm
 
+def apply_umap(representations, labels):
+    """Apply UMAP dimensionality reduction to representations to allow visualisation."""
+    fig, ax = plt.subplots()
+
+    mapper = umap.UMAP().fit(representations)
+    umap.plot.points(mapper, labels=labels, ax=ax)
+    
+    return fig, ax
+
 
 def main():
-    root_dir = Path().resolve().parent.parent
+    resample_rate = 16_000    # Matching sample rate used by Sethi et al.: https://www.pnas.org/content/117/29/17049.
+    
+    # Values following those delineated in https://arxiv.org/pdf/1609.09430.pdf.
+    window_length_secs = 0.025
+    hop_length_secs = 0.01
+    window_length_samples = int(round(resample_rate * window_length_secs))
+    hop_length_samples = int(round(resample_rate * hop_length_secs))
+    fft_length = 2 ** int(np.ceil(np.log(window_length_samples) / np.log(2.0)))
+    n_freq_bins = 64
+    target_attribute = 'habitat'
+    
+    # Define the spectrogram transform we want to apply to the waveform segments.
+    specgram_tform = T.MelSpectrogram(
+        sample_rate=resample_rate,
+        n_mels=n_freq_bins,
+        n_fft=fft_length,
+        win_length=window_length_samples,
+        hop_length=hop_length_samples
+    )
 
     # Initialise Conduit datamodule (stores dataloaders).
     dm = EcoacousticsDataModule(
-        root_dir,
+        root=ROOT_DIR,
         specgram_segment_len=0.96,
         test_prop=0,
         val_prop=0,
         train_batch_size=1,
-        num_freq_bins=64,
-        resample_rate=16_000,
+        target_attr=target_attribute,
+        preprocessing_transform=specgram_tform
     )
     dm.prepare_data()
     dm.setup()
 
     # Pass all data through VGGish.
-    representations, labels = gen_reps(dm, root_dir)
+    representations, labels = gen_reps(dm, ROOT_DIR)
 
     # Classify representations using a random forest.
     avg_f1, cm = run_random_forest(representations, labels)
@@ -117,7 +148,11 @@ def main():
 
     fig, ax = plt.subplots()
     metrics.ConfusionMatrixDisplay(cm).plot(ax=ax)
-    fig.savefig(root_dir / "random_forest_cm.png")
+    fig.savefig(ROOT_DIR / f"random_forest_{target_attribute}_cm.png")
+    
+    # Apply UMAP dimensionality reduction to representations for visualisation.
+    fig, _ = apply_umap(representations, labels)
+    fig.savefig(ROOT_DIR / f'umap_visualisation_{target_attribute}.png')
 
 
 if __name__ == "__main__":
