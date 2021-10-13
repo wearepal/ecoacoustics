@@ -1,6 +1,6 @@
 # Deep Learning Soundscapes for Ecoacoustics
 
-This repository packages up the work I undertook for my internship with the Predictive Analytics Lab at Sussex University. The repository demonstrates how to use the Predictive Analytics Lab's Conduit framework integration of the ecoacoustics audio dataset provided by Aldrige et al. [1], while also reproducing some of the results obtained by Sethi et al. [2].
+This repository packages up the work I undertook for my internship with the Predictive Analytics Lab at Sussex University. The repository demonstrates how to use the Predictive Analytics Lab's Conduit framework integration of the ecoacoustics audio dataset provided by Eldrige et al. [1], while also reproducing some of the results obtained by Sethi et al. [2].
 
 ## Installation
 First ensure you have a Python environment (>=3.8) either via Anaconda 
