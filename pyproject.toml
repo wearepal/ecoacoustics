@@ -2,12 +2,12 @@
 name = "ecoacoustics"
 version = "0.1.0"
 description = ""
-authors = ["DavidHurst <davidshrst@gmail.com>"]
+authors = ["DavidHurst <davidshrst@gmail.com>", "Ivor Simpson <i.simpson@sussex.ac.uk>"]
 
 [tool.poetry.dependencies]
 python = "3.8"
 ipywidgets = "^7.6.5"
-conduit = {git = "https://github.com/predictive-analytics-lab/conduit", branch = "ecoacoustic-dm-2"}
+conduit = {git = "https://github.com/predictive-analytics-lab/conduit", branch = "main"}
 umap-learn = "^0.5.1"
 datashader = "^0.13.0"
 bokeh = "^2.4.0"
