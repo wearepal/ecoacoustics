@@ -56,7 +56,7 @@ and change directory to base directory of the repo (ensure you are in the same d
     ```
 3. Either run the cells in the notebook manually or run the script with:
     ```sh
-    python '.\ecoacoustics\Ecoacoustics Script.py'
+    python '.\ecoacoustics\process_vggish.py'
     ```
 ---
 [1]: Alice Eldridge, Paola Moscoso, Patrice Guyot, & Mika Peck. (2018). Data for "Sounding out Ecoacoustic Metrics: Avian species richness is predicted by acoustic indices in temperate but not tropical habitats" (Final) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.1255218
