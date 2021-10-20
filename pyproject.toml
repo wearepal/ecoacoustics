@@ -5,7 +5,7 @@ description = ""
 authors = ["DavidHurst <davidshrst@gmail.com>", "Ivor Simpson <i.simpson@sussex.ac.uk>"]
 
 [tool.poetry.dependencies]
-python = "3.8"
+python = "^3.8"
 ipywidgets = "^7.6.5"
 conduit = {git = "https://github.com/predictive-analytics-lab/conduit", branch = "main"}
 umap-learn = "^0.5.1"
