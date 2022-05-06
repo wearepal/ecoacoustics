@@ -3,16 +3,17 @@
 This repository packages up the work I undertook for my internship with the Predictive Analytics Lab at Sussex University. The repository demonstrates how to use the Predictive Analytics Lab's Conduit framework integration of the ecoacoustics audio dataset provided by Eldrige et al. [1], while also reproducing some of the results obtained by Sethi et al. [2].
 
 ## Installation
-First ensure you have a Python environment (>=3.8) either via Anaconda 
-(instructions https://docs.anaconda.com/anaconda/install/) or pre-installed (e.g. on Linux). 
+First ensure you have a Python environment (3.8) either via Anaconda
+(instructions https://docs.anaconda.com/anaconda/install/) or pre-installed (e.g. on Linux).
 Dependencies for this repository are managed with [Poetry] and it is recommended to install dependencies in a virtual environment as Conduit has quite a few dependencies. The following steps will show how this is done using [Anaconda].
 
 
 Instructions for Anaconda:
 
-1.  Create and activate an Anaconda virtual environment (`python=3.9` installs Python version 3.9):
+1.  Create and activate an Anaconda virtual environment (`python=3.8` installs Python version 3.8):
 ```sh
-    conda create --name my_env python=3.9
+    conda update conda
+    conda create --name my_env python=3.8
     conda activate my_env
     pip install --upgrade pip
 ```
@@ -25,9 +26,10 @@ Instructions for Anaconda:
         ```sh
         (Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
         ```
+    * (Check for updates) `poetry update self`
 
 
-Instructions for pre-installed Python (>=3.8):
+Instructions for pre-installed Python (3.8):
 
 ```
 # Create your environment
@@ -51,12 +53,14 @@ and change directory to base directory of the repo (ensure you are in the same d
     cd ecoacoustics
 ```
 2. Call poetry to install all modules/packages that this repository depends on:
-    ```sh
-    poetry install --no-dev
-    ```
+    * As a user: `poetry install --no-dev`
+    * As a developer: `poetry install`
 3. Either run the cells in the notebook manually or run the script with:
     ```sh
     python '.\ecoacoustics\process_vggish.py'
+    ```
+   ```shell
+    python main.py
     ```
 ---
 [1]: Alice Eldridge, Paola Moscoso, Patrice Guyot, & Mika Peck. (2018). Data for "Sounding out Ecoacoustic Metrics: Avian species richness is predicted by acoustic indices in temperate but not tropical habitats" (Final) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.1255218

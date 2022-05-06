@@ -1,0 +1,47 @@
+---
+defaults:
+  - /schema/dm: ecoacoustics
+  - _self_
+train_batch_size: 1
+eval_batch_size: null
+val_prop: 0.2
+test_prop: 0.2
+num_workers: 0
+seed: 47
+persist_workers: false
+pin_memory: true
+stratified_sampling: false
+instance_weighting: false
+training_mode: epoch
+root: /Users/ot44/Data/ #/srv/galene0/shared/data/conduit/
+train_transforms:
+  _target_: torchvision.transforms.Compose
+  transforms:
+    - _target_: ecoacoustics.transforms.LogMelSpectrogramNp
+      sample_rate: 16_000
+      stft_window_length_seconds: 0.025
+      stft_hop_length_seconds: 0.010
+      log_offset: 0.01  # Offset used for stabilized log of input mel-spectrogram.
+      num_mel_bins: 64  # Frequency bands in input mel-spectrogram patch.
+      mel_min_hz: 125
+      mel_max_hz: 7_500
+      mel_break_freq_hertz: 700.0
+      mel_high_freq_q: 1_127.0
+    - _target_: ecoacoustics.transforms.FramingNp
+test_transforms:
+  _target_: torchvision.transforms.Compose
+  transforms:
+    - _target_: ecoacoustics.transforms.LogMelSpectrogramNp
+      sample_rate: 16_000
+      stft_window_length_seconds: 0.025
+      stft_hop_length_seconds: 0.010
+      log_offset: 0.01  # Offset used for stabilized log of input mel-spectrogram.
+      num_mel_bins: 64  # Frequency bands in input mel-spectrogram patch.
+      mel_min_hz: 125
+      mel_max_hz: 7_500
+      mel_break_freq_hertz: 700.0
+      mel_high_freq_q: 1_127.0
+    - _target_: ecoacoustics.transforms.FramingNp
+segment_len: 60
+sample_rate: 16_000
+target_attrs: [habitat]

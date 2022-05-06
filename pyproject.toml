@@ -5,19 +5,89 @@ description = ""
 authors = ["DavidHurst <davidshrst@gmail.com>", "Ivor Simpson <i.simpson@sussex.ac.uk>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "~3.8"
 ipywidgets = "^7.6.5"
-conduit = {git = "https://github.com/predictive-analytics-lab/conduit", branch = "main"}
 umap-learn = "^0.5.1"
 datashader = "^0.13.0"
 bokeh = "^2.4.0"
 pandas = "^1.3.3"
 matplotlib = "^3.4.3"
 holoviews = "^1.14.6"
+wandb = "^0.12.14"
+ranzen = {version = "^1.2.6", extras = ["hydra"]}
+conduit = {git = "https://github.com/wearepal/conduit.git", rev = "04b0f1da24d8327987ece3488cc6467e6ce9ef46"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+pyright = "^1.1.237"
+isort = "^5.10.1"
+black = "^22.3.0"
+pre-commit = "^2.18.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+skip-string-normalization = true
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | conduit/hydra
+  )/
+  | foo.py           # also separately exclude a file named foo.py in
+                     # the root of the project
+)
+'''
+[tool.isort]
+known_third_party = ["PIL", "albumentations", "attr", "cv2", "ethicml", "hydra", "numpy", "omegaconf", "pandas", "pytest", "pytorch_lightning", "ranzen", "requests", "sklearn", "torch", "torchaudio", "torchmetrics", "torchvision", "tqdm", "typing_extensions"]
+known_future_library = []
+extra_standard_library = ["dataclasses", "__future__", "typing_extensions"]
+line_length = 88
+profile = "black"
+force_sort_within_sections = "True"
+classes = ["MISSING"]
+
+[tool.pyright]
+include = ["conduit"]
+exclude = ["**/node_modules", "**/__pycache__"]
+typeCheckingMode = "basic"
+pythonVersion = "3.8"
+reportUnusedImport = "error"
+reportDuplicateImport  = "error"
+reportIncompatibleVariableOverride = "error"
+reportOverlappingOverload = "error"
+reportUntypedNamedTuple = "error"
+reportConstantRedefinition = "warning"
+reportMissingImports = "error"
+reportMissingTypeStubs = "warning"
+strictListInference = true
+strictSetInference = true
+strictParameterNoneValue = true
+
+[tool.mypy]
+python_version = "3.8"
+no_implicit_optional = true
+allow_redefinition = true
+strict_equality = true
+check_untyped_defs = true
+warn_unreachable = true
+disallow_any_unimported = false
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+show_error_codes = true
+warn_unused_ignores = false
+exclude = ["conf.py"]

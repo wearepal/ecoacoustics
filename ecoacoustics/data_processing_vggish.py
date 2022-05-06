@@ -6,6 +6,7 @@ from conduit.data.datamodules.audio import EcoacousticsDataModule
 import torchaudio.transforms as T
 from tqdm import tqdm
 
+
 def prepare_data(root_directory, target_attribute):
     resample_rate = 16_000  # Matching sample rate used by Sethi et al.: https://www.pnas.org/content/117/29/17049.
 
@@ -35,7 +36,7 @@ def prepare_data(root_directory, target_attribute):
         train_batch_size=1,
         target_attr=target_attribute,
         preprocessing_transform=specgram_tform,
-        resample_rate=resample_rate
+        resample_rate=resample_rate,
     )
     dm.prepare_data()
     dm.setup()
@@ -71,7 +72,7 @@ def process_vggish(datamodule):
     with torch.no_grad():
         for data in tqdm(data_loader, desc="Generating Representations"):
             # Crop spectrogram to meet VGGish's expected dimensions.
-            specgram = data.x[:, :, :, :96 * 60]
+            specgram = data.x[:, :, :, : 96 * 60]
 
             # Transpose spectrogram to get time on the vertical axis instead of freq bins.
             specgram = torch.transpose(specgram, -2, -1)
