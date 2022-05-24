@@ -6,11 +6,11 @@
 """
 
 from pathlib import Path
+
+from data_analysis import apply_umap, run_random_forest
+from data_processing_vggish import prepare_data
 import matplotlib.pyplot as plt
 import numpy as np
-from data_processing_vggish import prepare_data
-from data_analysis import run_random_forest, apply_umap
-
 from sklearn import metrics
 
 ROOT_DIR = Path().resolve().parent.parent

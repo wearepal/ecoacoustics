@@ -1,11 +1,11 @@
 # Author: Ivor Simpson, University of Sussex (i.simpson@sussex.ac.uk)
 # Purpose: Simple functions for analysing audio representations
-from tqdm import tqdm
+import matplotlib.pyplot as plt
+import numpy as np
 from sklearn import ensemble, metrics, model_selection
+from tqdm import tqdm
 import umap
 import umap.plot
-import numpy as np
-import matplotlib.pyplot as plt
 
 
 def run_random_forest(representations, labels, n_folds=5):

@@ -1,8 +1,8 @@
 # Author: Ivor Simpson, University of Sussex (i.simpson@sussex.ac.uk)
 # Purpose: Prepare our data for data processing with VGGish
+from conduit.data.datamodules.audio import EcoacousticsDataModule
 import numpy as np
 import torch
-from conduit.data.datamodules.audio import EcoacousticsDataModule
 import torchaudio.transforms as T
 from tqdm import tqdm
 

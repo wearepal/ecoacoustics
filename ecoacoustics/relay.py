@@ -12,8 +12,8 @@ from pytorch_lightning.loggers import WandbLogger
 from ranzen.decorators import implements
 from ranzen.hydra import Option, Relay
 import torch
+
 from ecoacoustics.conf import WandbLoggerConf
-from ecoacoustics.models.download_wrapper import DownloadWrapper
 
 __all__ = [
     "EcoacousticsRelay",

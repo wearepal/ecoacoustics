@@ -54,7 +54,7 @@ exclude = '''
 )
 '''
 [tool.isort]
-known_third_party = ["PIL", "albumentations", "attr", "cv2", "ethicml", "hydra", "numpy", "omegaconf", "pandas", "pytest", "pytorch_lightning", "ranzen", "requests", "sklearn", "torch", "torchaudio", "torchmetrics", "torchvision", "tqdm", "typing_extensions"]
+known_third_party = ["attr", "conduit", "data_analysis", "data_processing_vggish", "hydra", "matplotlib", "numpy", "omegaconf", "pytorch_lightning", "ranzen", "sklearn", "torch", "torchaudio", "tqdm", "typing_extensions", "umap"]
 known_future_library = []
 extra_standard_library = ["dataclasses", "__future__", "typing_extensions"]
 line_length = 88

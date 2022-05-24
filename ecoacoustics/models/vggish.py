@@ -1,10 +1,9 @@
-from types import MethodType
 from typing import TypeVar
 
-import pytorch_lightning as pl
-import torch
 from conduit.data import BinarySample
-from ranzen import parsable, implements
+import pytorch_lightning as pl
+from ranzen import implements, parsable
+import torch
 from torch import nn
 
 T = TypeVar('T')
