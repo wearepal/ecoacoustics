@@ -24,8 +24,9 @@ def make_layers():
 
 class Vggish(pl.LightningModule):
     @parsable
-    def __init__(self):
+    def __init__(self, learning_rate: float):
         super().__init__()
+        self.learning_rate = learning_rate
 
         self.features = make_layers()
         self.embeddings = nn.Sequential(
@@ -66,4 +67,4 @@ class Vggish(pl.LightningModule):
 
     def configure_optimizers(self) -> torch.optim.Optimizer:
         # Only train the embeddings network
-        return torch.optim.Adam(self.embeddings.parameters(), lr=0.02)
+        return torch.optim.AdamW(self.parameters(), lr=self.learning_rate)
