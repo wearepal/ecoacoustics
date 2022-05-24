@@ -1,3 +1,4 @@
 
 .idea/*
 /conf/
+/external_confs/dm/vggish_local.yaml

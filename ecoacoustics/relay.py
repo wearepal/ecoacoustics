@@ -13,7 +13,7 @@ from ranzen.decorators import implements
 from ranzen.hydra import Option, Relay
 import torch
 from ecoacoustics.conf import WandbLoggerConf
-
+from ecoacoustics.models.download_wrapper import DownloadWrapper
 
 __all__ = [
     "EcoacousticsRelay",
@@ -62,7 +62,20 @@ class EcoacousticsRelay(Relay):
         dm.prepare_data()
         dm.setup()
 
+        weights_file = Path(__file__).parent / "vggish_weights.pt"
+        if not weights_file.exists():
+            loaded: nn.Module = torch.hub.load(
+                'DavidHurst/torchvggish',
+                'vggish',
+                preprocess=False,
+                postprocess=False,
+            )
+            # model = DownloadWrapper(loaded, weights_file)
+            torch.save({"state_dict": loaded.state_dict()}, weights_file)
+
         model: pl.LightningModule = instantiate(self.model)
+        chkpt = torch.load(weights_file)
+        model.load_state_dict(chkpt["state_dict"])
 
         if self.logger.get("group", None) is None:
             default_group = f"{dm.__class__.__name__}"

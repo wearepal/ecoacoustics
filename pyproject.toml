@@ -16,6 +16,7 @@ holoviews = "^1.14.6"
 wandb = "^0.12.14"
 ranzen = {version = "^1.2.6", extras = ["hydra"]}
 conduit = {git = "https://github.com/wearepal/conduit.git", rev = "04b0f1da24d8327987ece3488cc6467e6ce9ef46"}
+pytorch-lightning = "^1.6.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
