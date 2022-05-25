@@ -6,7 +6,7 @@ from ranzen.hydra import Option
 from typing_extensions import Type
 
 from ecoacoustics.models.vggish import Vggish
-from ecoacoustics.relay import EcoacousticsRelay
+from ecoacoustics.relays.relay import EcoacousticsRelay
 
 if __name__ == "__main__":
     dm_ops: List[Type[Any] | Option] = [

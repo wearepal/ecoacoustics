@@ -1,5 +1,7 @@
 # Author: Ivor Simpson, University of Sussex (i.simpson@sussex.ac.uk)
 # Purpose: Simple functions for analysing audio representations
+from typing import Any, List, Tuple
+
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import ensemble, metrics, model_selection
@@ -8,7 +10,9 @@ import umap
 import umap.plot
 
 
-def run_random_forest(representations, labels, n_folds=5):
+def run_random_forest(
+    representations: np.ndarray, labels: np.ndarray, n_folds: int = 5
+) -> Tuple[float, float, Tuple[float, ...]]:
     """
     Apply a random forest classifier to predict the labels given the representations.
     """
@@ -40,7 +44,9 @@ def run_random_forest(representations, labels, n_folds=5):
     return avg_f1, avg_accuracy, cm
 
 
-def apply_umap(representations, labels, label_names):
+def apply_umap(
+    representations: np.ndarray, labels: np.ndarray, label_names: List[str]
+) -> Tuple[Any, Any]:
     """Apply UMAP dimensionality reduction to representations to allow visualisation."""
     fig, ax = plt.subplots()
     # Take the umap parameters from the Sethi paper

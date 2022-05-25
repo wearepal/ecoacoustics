@@ -3,3 +3,4 @@
 /conf/
 /external_confs/dm/vggish_local.yaml
 /ecoacoustics/vggish_weights.pt
+/outputs/

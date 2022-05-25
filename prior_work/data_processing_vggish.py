@@ -1,13 +1,17 @@
 # Author: Ivor Simpson, University of Sussex (i.simpson@sussex.ac.uk)
 # Purpose: Prepare our data for data processing with VGGish
+from pathlib import Path
+from typing import Tuple
+
 from conduit.data.datamodules.audio import EcoacousticsDataModule
 import numpy as np
+import pytorch_lightning as pl
 import torch
 import torchaudio.transforms as T
 from tqdm import tqdm
 
 
-def prepare_data(root_directory, target_attribute):
+def prepare_data(root_directory: Path, target_attribute: str) -> Tuple[np.ndarray, np.ndarray]:
     resample_rate = 16_000  # Matching sample rate used by Sethi et al.: https://www.pnas.org/content/117/29/17049.
 
     # Values following those delineated in https://arxiv.org/pdf/1609.09430.pdf.
@@ -28,6 +32,7 @@ def prepare_data(root_directory, target_attribute):
     )
 
     # Initialise Conduit datamodule (stores dataloaders).
+    # TODO: EcoacousticsDataModule in conduit has changed. This needs updating
     dm = EcoacousticsDataModule(
         root=root_directory,
         specgram_segment_len=0.96 * 60.0,
@@ -47,7 +52,7 @@ def prepare_data(root_directory, target_attribute):
     return representations, labels
 
 
-def process_vggish(datamodule):
+def process_vggish(datamodule: pl.LightningDataModule) -> Tuple[np.ndarray, np.ndarray]:
     """Pass data through VGGish to obtain 128 dimensional vector representations of samples."""
 
     # Get data loader.

@@ -17,7 +17,7 @@ ROOT_DIR = Path().resolve().parent.parent
 LABEL_NAMES = ["UK1", "UK2", "EC1", "EC3", "EC2", "UK3"]
 
 
-def main():
+def main() -> None:
     target_attribute = "habitat"
     representations_file = ROOT_DIR / f"representations_{target_attribute}.npz"
 

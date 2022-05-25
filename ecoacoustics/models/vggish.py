@@ -1,4 +1,4 @@
-from typing import TypeVar
+from typing import List, TypeVar
 
 from conduit.data import BinarySample
 import pytorch_lightning as pl
@@ -9,8 +9,8 @@ from torch import nn
 T = TypeVar('T')
 
 
-def make_layers():
-    layers = []
+def make_layers() -> nn.Module:
+    layers: List[nn.Module] = []
     in_channels = 1
     for v in [64, "M", 128, "M", 256, 256, "M", 512, 512, "M"]:
         if v == "M":
@@ -18,6 +18,7 @@ def make_layers():
         else:
             conv2d = nn.Conv2d(in_channels, v, kernel_size=3, padding=1)
             layers += [conv2d, nn.ReLU(inplace=True)]
+            assert isinstance(v, int)
             in_channels = v
     return nn.Sequential(*layers)
 

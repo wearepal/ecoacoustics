@@ -113,7 +113,7 @@ class LogMelSpectrogramNp(nn.Module):
         strides = (data.strides[0] * hop_length,) + data.strides
         return np.lib.stride_tricks.as_strided(data, shape=shape, strides=strides)
 
-    def periodic_hann(self, window_length: int) -> float:
+    def periodic_hann(self, window_length: int) -> np.ndarray:
         """Calculate a "periodic" Hann window.
         The classic Hann window is defined as a raised cosine that starts and
         ends on zero, and where every value appears twice, except the middle

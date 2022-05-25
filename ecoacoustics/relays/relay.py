@@ -12,8 +12,9 @@ from pytorch_lightning.loggers import WandbLogger
 from ranzen.decorators import implements
 from ranzen.hydra import Option, Relay
 import torch
+from torch import nn
 
-from ecoacoustics.conf import WandbLoggerConf
+from ecoacoustics.manual_confs.logger_conf import WandbLoggerConf
 
 __all__ = [
     "EcoacousticsRelay",
@@ -28,7 +29,7 @@ class EcoacousticsRelay(Relay):
     logger: DictConfig
 
     seed: Optional[int] = 42
-    arftifact_dir: str = "."
+    arftifact_dir: str = ".."
 
     @classmethod
     @implements(Relay)
@@ -36,9 +37,9 @@ class EcoacousticsRelay(Relay):
         cls,
         root: Path | str,
         *,
+        clear_cache: bool = False,
         dm: list[type[Any] | Option],
         model: list[type[Any] | Option],
-        clear_cache: bool = False,
     ) -> None:
         configs = dict(
             dm=dm,
@@ -48,8 +49,8 @@ class EcoacousticsRelay(Relay):
         )
         super().with_hydra(
             root=root,
-            instantiate_recursively=False,
             clear_cache=clear_cache,
+            instantiate_recursively=False,
             **configs,
         )
 
@@ -62,7 +63,8 @@ class EcoacousticsRelay(Relay):
         dm.prepare_data()
         dm.setup()
 
-        weights_file = Path(__file__).parent / "vggish_weights.pt"
+        # Rather than redownloading the model weights each time...
+        weights_file = Path(__file__).parent.parent / "vggish_weights.pt"
         if not weights_file.exists():
             loaded: nn.Module = torch.hub.load(
                 'DavidHurst/torchvggish',
@@ -77,14 +79,15 @@ class EcoacousticsRelay(Relay):
         chkpt = torch.load(weights_file)
         model.load_state_dict(chkpt["state_dict"])
 
+        # Create a Logger
         if self.logger.get("group", None) is None:
             default_group = f"{dm.__class__.__name__}"
             self.logger["group"] = default_group
         logger: WandbLogger = instantiate(self.logger, reinit=True)
         if raw_config is not None:
             logger.log_hyperparams(raw_config)  # type: ignore
-        trainer: pl.Trainer = instantiate(self.trainer, logger=logger)
 
+        trainer: pl.Trainer = instantiate(self.trainer, logger=logger)
         # Fine tune the vggish.embedding layers
         trainer.fit(model, dm)
 
